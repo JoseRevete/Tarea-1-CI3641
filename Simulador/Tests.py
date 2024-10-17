@@ -7,6 +7,7 @@ def simulate_input(inputs):
     main()
     sys.stdin = sys.__stdin__
 
+# Test para verificar que el programa se ejecute correctamente
 if __name__ == "__main__":
     inputs = """\
 DEFINIR PROGRAMA fibonacci LOCAL

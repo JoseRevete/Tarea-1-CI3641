@@ -1,9 +1,11 @@
 public class MatrizMagica {
+    // Método que recibe una matriz cuadrada y determina si es una matriz mágica.
     public static String matrizMagica(int[][] n) {
         if (n[0].length != n.length) {throw new IllegalArgumentException("La matriz debe ser cuadrada.");}
         int suma = 0;
         int previo = 0;
 
+        // Se suman las filas y columnas de la matriz y se comparan con el valor de la primera fila.
         for (int i = 0; i < n.length; i++) {
             for (int j = 0; j < n.length; j++) {
                 suma += n[i][j];
@@ -22,6 +24,8 @@ public class MatrizMagica {
             else {previo = suma;}
             suma = 0;
         }
+
+        // Se suman las diagonales de la matriz y se comparan con el valor de la primera fila.
         for (int i = 0; i < n.length; i++) {
             suma += n[i][i];
         }

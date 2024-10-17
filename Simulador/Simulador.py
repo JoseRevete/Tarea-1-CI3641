@@ -1,7 +1,9 @@
+# Se declara la clase Grafo
 class Grafo:
     def __init__(self):
         self.grafo = {}
 
+    # Se agrega un traductor al grafo
     def agregar_traductor(self, lenguajeBase, lenguajeOrigen, lenguajeDestino):
         if not lenguajeBase or not lenguajeOrigen or not lenguajeDestino: return False
         if lenguajeOrigen not in self.grafo:
@@ -11,6 +13,7 @@ class Grafo:
         self.grafo[lenguajeOrigen]['traductores'][lenguajeBase].append(lenguajeDestino)
         return True
 
+    # Se agrega un interprete al grafo
     def agregar_interprete(self, lenguajeBase, lenguajeOrigen):
         if not lenguajeBase or not lenguajeOrigen: return False
         if lenguajeOrigen not in self.grafo:
@@ -18,9 +21,11 @@ class Grafo:
         self.grafo[lenguajeOrigen]['interpretes'][lenguajeBase] = True
         return True
 
+    # Se busca un lenguaje en el grafo
     def buscar(self, lenguaje):
         return self.grafo.get(lenguaje, None)
 
+    # Se busca un interprete en el grafo partiendo de un lenguaje
     def buscar_interprete(self, lenguaje):
         esLOCAL = False
         if not lenguaje: return False
@@ -38,39 +43,50 @@ class Grafo:
                                 return esLOCAL
         return esLOCAL
 
+
+    # Se busca un traductor en el grafo partiendo de un lenguaje
     def buscar_traductor(self, lenguaje):
         esLOCAL = False
         if not lenguaje: return False
+        # Si el lenguaje se encuentra en el grafo
         if lenguaje in self.grafo:
             if str(self.grafo[lenguaje]['traductores']):
                 claves_traductores = list(self.grafo[lenguaje]['traductores'].keys())
                 if str(claves_traductores):
                     for i in range(len(claves_traductores)):
+                        # Si el lenguaje Base es LOCAL
                         if str(claves_traductores[i]) == "LOCAL":
                             for j in range(len(self.grafo[lenguaje]['traductores']['LOCAL'])):
+                                # Si el lenguaje Destino es LOCAL
                                 if str(self.grafo[lenguaje]['traductores']['LOCAL'][j]) == "LOCAL":
                                     esLOCAL = True
                                     break
                                 else:
+                                    # Si hay un interprete del lenguaje Destino a LOCAL
                                     if str(self.grafo[lenguaje]['interpretes'][claves_traductores[j]]) == "LOCAL":
                                         esLOCAL = True
                                         break
+                                    # Buscar si hay un interprete del lenguaje Destino a LOCAL
                                     elif str(self.grafo[lenguaje]['interpretes'][claves_traductores[j]]) == "LOCAL":
                                         esLOCAL = self.buscar_interprete(claves_traductores[j])
                                         if esLOCAL:
                                             break
+                                    # Buscar si hay un traductor del lenguaje Destino a LOCAL
                                     else:
                                         esLOCAL = self.buscar_traductor(claves_traductores[j])
                                         if esLOCAL:
                                             break
                         else:
                             esLOCAL = self.buscar_interprete(claves_traductores[i])
+                            # Si hay un interprete del lenguaje Base a LOCAL
                             if esLOCAL:
                                 for j in range(len(self.grafo[lenguaje]['traductores'][claves_traductores[i]])):
+                                    # Si el lenguaje Destino es LOCAL
                                     if str(self.grafo[lenguaje]['traductores'][claves_traductores[i]][j]) == "LOCAL":
                                         esLOCAL = True
                                         break
                                     else:
+                                        # Si hay un interprete del lenguaje Destino a LOCAL
                                         esLOCAL = self.buscar_interprete(self.grafo[lenguaje]['traductores'][claves_traductores[i]][j])
                                         if esLOCAL:
                                             break
@@ -82,6 +98,7 @@ class Grafo:
                                 break
         return esLOCAL
 
+    # Se busca un lenguaje en el grafo
     def busqueda(self, lenguaje):
         esLOCAL = False
         if not lenguaje: return None
@@ -90,6 +107,7 @@ class Grafo:
         
         try:
             if str(self.grafo[str(lenguaje)]):
+                # Se realiza primero la busqueda de los interpretes
                 if  str(self.grafo[str(lenguaje)]['interpretes']):
                     claves_interpretes = list(self.grafo[lenguaje]['interpretes'].keys())
                     if str(claves_interpretes):
@@ -98,86 +116,112 @@ class Grafo:
                             else:
                                 esLOCAL = self.buscar_interprete(claves_interpretes[i])
                                 if esLOCAL: break
+            # Si no se encuentra un interprete, se realiza la busqueda de los traductores
                 if str(self.grafo[str(lenguaje)]['traductores']):
                     claves_traductores = list(self.grafo[lenguaje]['traductores'].keys())
                     if str(claves_traductores):
                         for i in range(len(claves_traductores)):
+                            # Si el lenguaje Base es LOCAL
                             if str(claves_traductores[i]) == "LOCAL":
                                 for j in range(len(self.grafo[lenguaje]['traductores']['LOCAL'])):
+                                    # Si el lenguaje Destino es LOCAL
                                     if str(self.grafo[lenguaje]['traductores']['LOCAL'][j]) == "LOCAL": esLOCAL = True; break
                                     else:
+                                        # Si hay un interprete del lenguaje Destino a LOCAL
                                         if str(self.grafo[self.grafo[lenguaje]['traductores']['LOCAL'][j]]['interpretes']) == "LOCAL": esLOCAL = True;break
                                         else:
                                             esLOCAL = self.buscar_interprete(self.grafo[lenguaje]['traductores']['LOCAL'][j])
+                                            # Si hay un interprete del lenguaje Destino a LOCAL
                                             if esLOCAL:break
                                             else:
+                                                # Si hay un traductor del lenguaje Destino a LOCAL
                                                 esLOCAL = self.buscar_traductor(self.grafo[lenguaje]['traductores']['LOCAL'][j])
                                                 if esLOCAL: break
                             else:
                                 esLOCAL = self.buscar_interprete(claves_traductores[i])
+                                # Si hay un interprete del lenguaje Base a LOCAL
                                 if esLOCAL:
                                     for j in range(len(self.grafo[lenguaje]['traductores'][claves_traductores[i]])):
+                                        # Si el lenguaje Destino es LOCAL
                                         if str(self.grafo[lenguaje]['traductores'][claves_traductores[i]][j]) == "LOCAL": esLOCAL = True;break
                                         else:
+                                            # Si hay un interprete del lenguaje Destino a LOCAL
                                             esLOCAL = self.buscar_interprete(self.grafo[lenguaje]['traductores'][claves_traductores[i]][j])
                                             if esLOCAL:break
                                             else:
+                                                # Si hay un traductor del lenguaje Destino a LOCAL
                                                 esLOCAL = self.buscar_traductor(self.grafo[lenguaje]['traductores'][claves_traductores[i]][j])
                                                 if esLOCAL: break
                                 else:
+                                    # Se define un nuevo traductor donde el lenguaje Origen es el lenguaje Base del anterior traductor
                                     nuevoTraductor = self.grafo[claves_traductores[i]]
                                     if str(nuevoTraductor['traductores']):
                                         claves_traductores_nuevo = list(nuevoTraductor['traductores'].keys())
                                         if str(claves_traductores_nuevo):
                                             for k in range(len(claves_traductores_nuevo)):
+                                                # Si el lenguaje Base es LOCAL
                                                 if str(claves_traductores_nuevo[k]) == "LOCAL":
                                                     for l in range(len(nuevoTraductor['traductores']['LOCAL'])):
+                                                        # Si el lenguaje Destino es LOCAL
                                                         if str(nuevoTraductor['traductores']['LOCAL'][l]) == "LOCAL":
                                                             esLOCAL = True
+                                                            # Se agrega el traductor al grafo
                                                             for m in range(len(self.grafo[claves_traductores[i]]['traductores']['LOCAL'])):
                                                                 self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores'][claves_traductores[i]][m])
                                                                 esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores'][claves_traductores[i]][m]); break
                                                         else:
                                                             try:
+                                                                # Se busca si el lenguaje Destino hay un interprete a LOCAL
                                                                 if str(self.grafo[nuevoTraductor['traductores']['LOCAL'][l]]['interpretes']['LOCAL']) or False:
                                                                     for m in range(len(self.grafo[lenguaje]['traductores'][claves_traductores[i]])):
                                                                         self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores'][claves_traductores[i]][m])
                                                                         esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores'][claves_traductores[i]][m])               
                                                                     break
                                                             except Exception as e:
+                                                                # Se busca si el lenguaje Destino hay un interprete a LOCAL
                                                                 esLOCAL = self.buscar_interprete(nuevoTraductor['traductores']['LOCAL'][l])
                                                                 if esLOCAL:
+                                                                    # Se agrega el traductor al grafo
                                                                     for m in range(len(self.grafo[lenguaje]['traductores']['LOCAL'])):
                                                                         self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores']['LOCAL'][m])
                                                                         esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores']['LOCAL'][m])
                                                                     break
                                                                 else:
+                                                                    # Se busca si el lenguaje Destino hay un traductor a LOCAL
                                                                     esLOCAL = self.buscar_traductor(self.grafo[claves_traductores[i]]['traductores']['LOCAL'][l])
                                                                     if esLOCAL:
+                                                                        # Se agrega el traductor al grafo
                                                                         for m in range(len(self.grafo[lenguaje]['traductores'][claves_traductores[i]])):
                                                                             self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores'][claves_traductores[i]][m])
                                                                             esLOCAL = self.busqueda(lenguaje)
                                                                         break
                                                 else:
+                                                    # Se busca si el lenguaje Base hay un interprete a LOCAL
                                                     esLOCAL = self.buscar_interprete(claves_traductores_nuevo[k])
                                                     if esLOCAL:
                                                         for l in range(len(nuevoTraductor['traductores'][claves_traductores_nuevo[k]])):
+                                                            # Si el lenguaje Destino es LOCAL
                                                             if str(nuevoTraductor['traductores'][claves_traductores_nuevo[k]][l]) == "LOCAL":
                                                                 esLOCAL = True
+                                                                # Se agrega el traductor al grafo
                                                                 for m in range(len(self.grafo[lenguaje]['traductores']['LOCAL'])):
                                                                     self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores']['LOCAL'][m])
                                                                     esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores']['LOCAL'][m])
                                                                 break
                                                             else:
+                                                                # Se busca si el lenguaje Destino hay un interprete a LOCAL
                                                                 esLOCAL = self.buscar_interprete(nuevoTraductor['traductores'][claves_traductores_nuevo[k]][l])
                                                                 if esLOCAL:
+                                                                    # Se agrega el traductor al grafo
                                                                     for m in range(len(self.grafo[lenguaje]['traductores'][claves_traductores[i]])):
                                                                         self.agregar_traductor(self.grafo[lenguaje]['traductores'][claves_traductores[i]][m], lenguaje, "LOCAL")
                                                                         esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores'][claves_traductores[i]][m])
                                                                     break
                                                                 else:
+                                                                    # Se busca si el lenguaje Destino hay un traductor a LOCAL
                                                                     esLOCAL = self.buscar_traductor(nuevoTraductor['traductores'][claves_traductores_nuevo[k]][l])
                                                                     if esLOCAL:
+                                                                        # Se agrega el traductor al grafo
                                                                         for m in range(len(self.grafo[lenguaje]['traductores']['LOCAL'])):
                                                                             self.agregar_traductor("LOCAL", lenguaje, self.grafo[lenguaje]['traductores']['LOCAL'][m])
                                                                             esLOCAL = self.busqueda(self.grafo[lenguaje]['traductores']['LOCAL'][m])
@@ -190,10 +234,12 @@ class Grafo:
             return False
         return esLOCAL
 
+# Se almacenan los datos de los programas
 datos_programas = {}
 
 G = Grafo()
 
+# Se define la funcion principal
 def main():
     print("Simulador iniciado.")
     while True:
@@ -203,6 +249,7 @@ def main():
         entradas(entrada.split(" ")[0], entrada.split(" ")[1:])
     print("Simulador finalizado.")
 
+# Se define la funcion de entradas
 def entradas(primera_entrada, resto_entrada=None):
     if primera_entrada:
         primera_entrada = primera_entrada.upper()
@@ -213,6 +260,7 @@ def entradas(primera_entrada, resto_entrada=None):
     else: ayuda()
     return True
 
+# Se define la funcion de definir
 def definir(entrada):
     if not entrada or len(entrada) < 2: print("Error: Faltan argumentos."); return False
     
@@ -226,6 +274,7 @@ def definir(entrada):
     else: ayuda() 
     return True
 
+# Se define la funcion de programa
 def programa(entrada):
     if not entrada or len(entrada) != 2: print("Error: Demasiados o pocos argumentos."); return False
     try:
@@ -242,6 +291,7 @@ def programa(entrada):
     except Exception as e: print(f"Error: {e}")
     return True
 
+# Se define la funcion de interprete
 def interprete(entrada):
     if not entrada or len(entrada) != 2: print("Error: Demasiados o pocos argumentos."); return False
     try:
@@ -258,6 +308,7 @@ def interprete(entrada):
     except Exception as e: print(f"Error: {e}")
     return True
 
+# Se define la funcion de traductor
 def traductor(entrada):
     if not entrada or len(entrada) != 3: print("Error: Demasiados o pocos argumentos."); return False
     
@@ -277,6 +328,7 @@ def traductor(entrada):
 
     return True
 
+# Se define la funcion de ejecutable
 def ejecutable(entrada):
     if not entrada or len(entrada) != 1: print("Error: Demasiados o pocos argumentos."); return False
     esLOCAL = False
@@ -295,6 +347,7 @@ def ejecutable(entrada):
     except Exception as e: print(f"Error: {e}")
     return esLOCAL
 
+# Se define la funcion de ayuda: Muestra los comandos disponibles
 def ayuda():
     print("Comandos disponibles:")
     print("DEFINIR PROGRAMA <nombre> <lenguaje>")
@@ -304,5 +357,6 @@ def ayuda():
     print("SALIR")
     return True
 
+# Se ejecuta el programa
 if __name__ == "__main__":
     main()

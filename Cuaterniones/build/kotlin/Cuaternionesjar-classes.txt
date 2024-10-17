@@ -1,1 +1,1 @@
-/home/jose/Documentos/Tarea_1-CI3641/Cuaterniones/build/classes/kotlin/main/Cuaternion.class
+/home/jose/Tarea-1-CI3641/Cuaterniones/build/classes/kotlin/main/Cuaternion.class
