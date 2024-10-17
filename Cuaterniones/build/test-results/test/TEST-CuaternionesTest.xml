@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CuaternionesTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2024-10-16T20:14:19" hostname="joserevete" time="0.049">
+  <properties/>
+  <testcase name="testCuaternionAddition()" classname="CuaternionesTest" time="0.043"/>
+  <testcase name="testCuaternionAdditionWithNumber()" classname="CuaternionesTest" time="0.001"/>
+  <testcase name="testCuaternionMultiplication()" classname="CuaternionesTest" time="0.0"/>
+  <testcase name="testCuaternionNorm()" classname="CuaternionesTest" time="0.0"/>
+  <testcase name="testCuaternionUnaryMinus()" classname="CuaternionesTest" time="0.0"/>
+  <testcase name="testCuaternionMultiplicationWithNumber()" classname="CuaternionesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

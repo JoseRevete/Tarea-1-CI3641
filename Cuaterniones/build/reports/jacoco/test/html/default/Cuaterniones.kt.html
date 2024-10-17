@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cuaterniones.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Cuaterniones</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Cuaterniones.kt</span></div><h1>Cuaterniones.kt</h1><pre class="source lang-java linenums"><span class="pc" id="L1">data class Cuaternion(val a: Number, val b: Number, val c: Number, val d: Number) {</span>
+    // Sobre carga de operador suma para sumar dos cuaterniones (+)
+    operator fun plus(other: Cuaternion): Cuaternion {
+<span class="fc" id="L4">        return Cuaternion(</span>
+<span class="fc" id="L5">            this.a.toDouble() + other.a.toDouble(),</span>
+<span class="fc" id="L6">            this.b.toDouble() + other.b.toDouble(),</span>
+<span class="fc" id="L7">            this.c.toDouble() + other.c.toDouble(),</span>
+<span class="fc" id="L8">            this.d.toDouble() + other.d.toDouble()</span>
+        )
+    }
+
+    // Sobre carga de operador suma para sumar un número a un cuaternion (+)
+    operator fun plus(other: Number): Cuaternion {
+<span class="fc" id="L14">        return Cuaternion(</span>
+<span class="fc" id="L15">            this.a.toDouble() + other.toDouble(),</span>
+<span class="fc" id="L16">            this.b.toDouble(),</span>
+<span class="fc" id="L17">            this.c.toDouble(),</span>
+<span class="fc" id="L18">            this.d.toDouble()</span>
+        )
+    }
+
+    // Sobre carga de operador multiplicación para calcular el producto entre cuaterniones (*)
+    operator fun times(other: Cuaternion): Cuaternion {
+<span class="fc" id="L24">        val a = this.a.toDouble() * other.a.toDouble() - this.b.toDouble() * other.b.toDouble() - this.c.toDouble() * other.c.toDouble() - this.d.toDouble() * other.d.toDouble()</span>
+<span class="fc" id="L25">        val b = this.a.toDouble() * other.b.toDouble() + this.b.toDouble() * other.a.toDouble() + this.c.toDouble() * other.d.toDouble() - this.d.toDouble() * other.c.toDouble()</span>
+<span class="fc" id="L26">        val c = this.a.toDouble() * other.c.toDouble() - this.b.toDouble() * other.d.toDouble() + this.c.toDouble() * other.a.toDouble() + this.d.toDouble() * other.b.toDouble()</span>
+<span class="fc" id="L27">        val d = this.a.toDouble() * other.d.toDouble() + this.b.toDouble() * other.c.toDouble() - this.c.toDouble() * other.b.toDouble() + this.d.toDouble() * other.a.toDouble()</span>
+<span class="fc" id="L28">        return Cuaternion(a, b, c, d)</span>
+    }
+
+    // Sobre carga de operador multiplicación para calcular el producto por un número (*)
+    operator fun times(other: Number): Cuaternion {
+<span class="fc" id="L33">        return Cuaternion(</span>
+<span class="fc" id="L34">            this.a.toDouble() * other.toDouble(),</span>
+<span class="fc" id="L35">            this.b.toDouble() * other.toDouble(),</span>
+<span class="fc" id="L36">            this.c.toDouble() * other.toDouble(),</span>
+<span class="fc" id="L37">            this.d.toDouble() * other.toDouble()</span>
+        )
+    }
+
+    // Sobre carga de operador resta para calcular el negativo (-)
+    operator fun unaryMinus(): Cuaternion {
+<span class="fc" id="L43">        return Cuaternion(this.a.toDouble(), -this.b.toDouble(), -this.c.toDouble(), -this.d.toDouble())</span>
+    }
+
+    // Sobre carga de operador not para calcular la medida(!)
+    operator fun not(): Double {
+<span class="fc" id="L48">        return Math.sqrt(this.a.toDouble() * this.a.toDouble() + this.b.toDouble() * this.b.toDouble() + this.c.toDouble() * this.c.toDouble() + this.d.toDouble() * this.d.toDouble())</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
